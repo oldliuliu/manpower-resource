@@ -35,6 +35,18 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    // 配置反向代理
+    proxy: {
+      '/api': {
+        // 当我们的本地的请求 有/api的时候，就会代理我们的请求地址向另外一个服务器发出请求
+        target: 'http://ihrm.itheima.net/hrsaas', // 跨域请求的地址
+        changeOrigin: true // 是否跨域 需要设置此值为true 才可以让本地服务代理我们发出请求
+        // pathRewrite: {
+        //   // 重新路由  localhost:8888/api/login  => www.baidu.com/api/login
+        //   '^/api': '' // 假设我们想把 localhost:8888/api/login 变成www.baidu.com/login 就需要这么做
+        // }
+      }
     }
     // before: require('./mock/mock-server.js')
   },
@@ -87,7 +99,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()

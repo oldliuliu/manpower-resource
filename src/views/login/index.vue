@@ -55,10 +55,12 @@
         type="primary"
         style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
-      >Login</el-button>
+      >
+        Login
+      </el-button>
 
       <div class="tips">
-        <span style="margin-right: 20px">账号: 13800000008</span>
+        <span style="margin-right: 20px">账号: 13700000008</span>
         <span> 密码: 123456</span>
       </div>
     </el-form>
@@ -67,10 +69,10 @@
 
 <script>
 import { validMobile } from '@/utils/validate'
-
+import { mapActions } from 'vuex'
 export default {
   name: 'Login',
-  data() {
+  data () {
     const validateMobile = (rule, value, callback) => {
       /* if (!validMobile(value)) {
         callback(new Error('手机号的格式不正确'))
@@ -79,23 +81,25 @@ export default {
       } */
       validMobile(value) ? callback() : callback(new Error('格式不正确'))
     }
-    const validatePassword = (rule, value, callback) => {
+    /* const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error('The password can not be less than 6 digits'))
       } else {
         callback()
       }
-    }
+    } */
     return {
       loginForm: {
-        mobile: '13800000008',
+        mobile: '13700000008',
         password: '123456'
       },
       loginRules: {
         mobile: [{ required: true, trigger: 'blur', message: '手机号不能为空' }, {
-          validator: validateMobile
+          validator: validateMobile, trigger: 'blur'
         }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        password: [{ required: true, trigger: 'blur', message: '密码不正确' }, {
+          trigger: 'blur', min: 6, max: 16, message: '密码长度为6-16位'
+        }]
       },
       loading: false,
       passwordType: 'password',
@@ -104,14 +108,15 @@ export default {
   },
   watch: {
     $route: {
-      handler: function(route) {
+      handler: function (route) {
         this.redirect = route.query && route.query.redirect
       },
       immediate: true
     }
   },
   methods: {
-    showPwd() {
+    ...mapActions(['user/login']), // 引入方法
+    showPwd () {
       if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
@@ -121,19 +126,24 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
+    handleLogin () {
+      // 表单手动校验
+      this.$refs.loginForm.validate(async isOK => {
+        if (isOK) {
+          try {
+            this.loading = true
+            // 只有校验通过了 我们才去调用action
+            await this['user/login'](this.loginForm)
+            // 应该登录成功之后
+            // async标记的函数实际上是一个promise对象
+            // await下面的代码 都是成功执行的代码
+            this.$router.push('/')
+          } catch (err) {
+            console.log(err)
+          } finally {
+            // 不论是try或者是catch 都关闭catch
             this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
-        } else {
-          console.log('error submit!!')
-          return false
+          }
         }
       })
     }
