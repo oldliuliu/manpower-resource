@@ -2,7 +2,7 @@
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, dir)
 }
 
@@ -40,7 +40,7 @@ module.exports = {
     proxy: {
       '/api': {
         // 当我们的本地的请求 有/api的时候，就会代理我们的请求地址向另外一个服务器发出请求
-        target: 'http://ihrm.itheima.net/hrsaas', // 跨域请求的地址
+        target: 'http://ihrm.itheima.net', // 跨域请求的地址
         changeOrigin: true // 是否跨域 需要设置此值为true 才可以让本地服务代理我们发出请求
         // pathRewrite: {
         //   // 重新路由  localhost:8888/api/login  => www.baidu.com/api/login
@@ -60,7 +60,7 @@ module.exports = {
       }
     }
   },
-  chainWebpack(config) {
+  chainWebpack (config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin('preload').tap(() => [
       {

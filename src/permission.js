@@ -6,7 +6,7 @@ import 'nprogress/nprogress.css' // 引入进度条样式
 
 const whiteList = ['/login', '/404'] // 定义白名单  所有不受权限控制的页面
 // 路由的前置守卫
-router.beforeEach(function(to, from, next) {
+router.beforeEach(async (to, from, next) => {
   NProgress.start() // 开启进度条
   //  首先判断有无token
   if (store.getters.token) {
@@ -16,6 +16,9 @@ router.beforeEach(function(to, from, next) {
       next('/') // 跳到主页
       NProgress.done() // 手动强制关闭一次  为了解决 手动切换地址时  进度条的不关闭的问题
     } else {
+      /* if (!store.getters.userId) {
+        await store.dispatch('user/getUserInfo')
+      } */
       next() // 直接放行
     }
   } else {
@@ -30,6 +33,6 @@ router.beforeEach(function(to, from, next) {
   }
 })
 // 后置守卫
-router.afterEach(function() {
+router.afterEach(function () {
   NProgress.done() // 关闭进度条
 })

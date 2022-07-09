@@ -60,7 +60,7 @@
       </el-button>
 
       <div class="tips">
-        <span style="margin-right: 20px">账号: 13700000008</span>
+        <span style="margin-right: 20px">账号: 13800000002</span>
         <span> 密码: 123456</span>
       </div>
     </el-form>
@@ -90,7 +90,7 @@ export default {
     } */
     return {
       loginForm: {
-        mobile: '13700000008',
+        mobile: '13800000002',
         password: '123456'
       },
       loginRules: {

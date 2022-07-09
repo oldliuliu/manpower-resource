@@ -93,7 +93,7 @@
   box-sizing: content-box;
 }
 
-@im @import './sidebar.scss';
+@import './sidebar.scss';
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
