@@ -102,7 +102,7 @@ export default {
     color: #ffffff;
     cursor: text;
     .breadBtn {
-      background: #84a9fe;
+      background: rgba(132, 169, 254);
       font-size: 14px;
       padding: 0 10px;
       display: inline-block;

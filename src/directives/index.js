@@ -1,4 +1,4 @@
-export const imagerror = {
+export const imageerror = {
   // 指令对象 会在当前的dom元素插入到节点之后执行
   inserted (dom, options) {
     // options是 指令中的变量的解释  其中有一个属性叫做 value
