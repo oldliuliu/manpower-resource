@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-container">
+  <div v-loading="loading" class="dashboard-container">
     <div class="app-container">
       <!-- 实现页面的基本布局 -->
       <el-card class="tree-card">
@@ -28,6 +28,7 @@
       :tree-node="node"
       @addDepts="getDepartments"
     />
+
   </div>
 </template>
 
@@ -50,7 +51,8 @@ export default {
       },
       company: {},
       showDialog: false, // 显示窗体
-      node: null// 记录当前的node节点
+      node: null, // 记录当前的node节点
+      loading: false // 用来控制进度弹层的显示和隐藏
     }
   },
   computed: {
@@ -64,10 +66,12 @@ export default {
   methods: {
     // debugger 调试专用
     async getDepartments () {
+      this.loading = true
       const res = await getDepartments()
       this.company = { name: res.companyName, manager: '负责人', id: '' }
       this.departs = tranListToTreeData(res.depts, '')// 需要将其转化成树形结构
-      console.log(res)
+      // console.log(res)
+      this.loading = false
     },
     AddDepts (node) {
       // 监听tree-tools中点击添加部门事件

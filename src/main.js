@@ -12,6 +12,13 @@ import App from './App'
 import store from './store'
 import router from './router'
 
+import * as filters from '@/filters' // 引入工具类
+// 注册全局的过滤器
+Object.keys(filters).forEach(key => {
+  // 注册过滤器
+  Vue.filter(key, filters[key])
+})
+
 import '@/icons' // icon
 import '@/permission' // permission control
 import * as directives from '@/directives'
@@ -27,7 +34,8 @@ if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }
-
+import Component from '@/components'
+Vue.use(Component) // 注册自己的插件
 // 注册自定义指令
 // 遍历所有的导出的指令对象，完成全局注册
 Object.keys(directives).forEach(key => {

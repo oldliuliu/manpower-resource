@@ -194,6 +194,9 @@ module.exports = {
       objectsInObjects: false
     }],
     'array-bracket-spacing': [2, 'never'],
-    'space-before-function-paren':0
+    'space-before-function-paren':0,
+    'vue/html-closing-bracket-newline':0,
+    'vue/html-indent':0,
+    'vue/max-attributes-per-line':0
   }
 }
