@@ -19,11 +19,19 @@ export default {
       }
     },
     {
-      path: 'detail/:id?', // 动态路由参数 ?表示该参数可传可不传
+      path: 'detail/:id', // 动态路由参数 ?表示该参数可传可不传
       component: () => import('@/views/employees/detail'),
       hidden: true, // 表示该组件在左侧显示
       meta: {
         title: '员工详情'
+      }
+    },
+    {
+      path: 'print/:id',
+      component: () => import('@/views/employees/print.vue'),
+      hidden: true,
+      meta: {
+        title: '员工打印'
       }
     }
   ]

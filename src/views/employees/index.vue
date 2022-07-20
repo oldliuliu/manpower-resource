@@ -23,6 +23,23 @@
         <el-table v-loading="loading" border :data="list">
           <el-table-column label="序号" sortable="" type="index" />
           <el-table-column label="姓名" sortable="" prop="username" />
+          <el-table-column width="120px" label="头像" align="center">
+            <!-- 插槽 -->
+            <template v-slot="{ row }">
+              <img
+                v-imageerror="require('@/assets/common/tt.jpg')"
+                :src="row.staffPhoto"
+                alt=""
+                style="
+                  border-radius: 50%;
+                  width: 100px;
+                  height: 100px;
+                  padding: 10px;
+                "
+                @click="showQrCode(row.staffPhoto)"
+              />
+            </template>
+          </el-table-column>
           <el-table-column label="工号" sortable="" prop="workNumber" />
           <el-table-column
             label="聘用形式"
@@ -44,7 +61,12 @@
           </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
             <template v-slot="{ row }">
-              <el-button type="text" size="small" @click="$router.push(`/employees/detail/${row.id}`)">查看</el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="$router.push(`/employees/detail/${row.id}`)"
+                >查看</el-button
+              >
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
@@ -75,6 +97,11 @@
     <!-- 放置弹出层 -->
     <!-- sync修饰符 -->
     <AddEmployee :show-dialog.sync="showDialog" />
+    <el-dialog title="二维码" :visible.sync="showCodeDialog">
+      <el-row type="flex" justify="center">
+        <canvas ref="myCanvas"></canvas>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -83,6 +110,7 @@ import AddEmployee from '@/views/employees/components/add-employee.vue'
 import EmployeeEnum from '@/api/constant/employees' // 引入员工的枚举对象
 import { getEmployeeList, delEmployee } from '@/api/employees'
 import { formatDate } from '@/filters'
+import QrCode from 'qrcode'
 export default {
   name: 'Employees',
   components: {
@@ -97,7 +125,8 @@ export default {
         size: 10,
         total: 0 // 总数
       },
-      showDialog: false// 关闭弹出层
+      showDialog: false, // 关闭弹出层
+      showCodeDialog: false
     }
   },
   created () {
@@ -184,6 +213,20 @@ export default {
       })
       // 不能这么写 因为要处理时间格式问题
       // return rows.map(item => Object.keys(headers).map(key => item[headers[key]]))
+    },
+    showQrCode (url) {
+      if (url) {
+        // url存在的情况下 才弹出
+        this.showCodeDialog = true // 数据更新  页面回立刻弹出？ 页面是异步的不会立刻弹出
+        // nexttick在上一次数据更新完毕，页面渲染之后
+        this.$nextTick(() => {
+          // 可以确认有ref对象了
+          QrCode.toCanvas(this.$refs.myCanvas, url)// 将地址转化为二维码
+          // 如果转的二维码后面的信息是一个地址  就会跳转到该地址 如果不是就会显示内容
+        })
+      } else {
+        this.$message.warning('用户未上传')
+      }
     }
   }
 }
