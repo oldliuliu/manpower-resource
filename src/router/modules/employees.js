@@ -1,5 +1,6 @@
 // 导出员工的路由规则
 import Layout from '@/layout'
+// import { Header } from 'element-ui'
 
 export default {
   // 员工管理
@@ -15,6 +16,14 @@ export default {
       meta: {
         title: '员工管理', // 这里用title表示左侧导航读取了这里的title属性
         icon: 'peoples'
+      }
+    },
+    {
+      path: 'detail/:id?', // 动态路由参数 ?表示该参数可传可不传
+      component: () => import('@/views/employees/detail'),
+      hidden: true, // 表示该组件在左侧显示
+      meta: {
+        title: '员工详情'
       }
     }
   ]

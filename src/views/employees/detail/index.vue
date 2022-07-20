@@ -1,0 +1,97 @@
+<template>
+  <div class="dashboard-container">
+    <div class="app-container">
+      <el-card>
+        <el-tabs>
+          <el-tab-pane label="登录账户设置">
+            <!-- 放置表单 -->
+            <el-form
+              ref="userForm"
+              :model="userInfo"
+              :rules="rules"
+              label-width="120px"
+              style="margin-left: 120px; margin-top: 30px"
+            >
+              <el-form-item label="姓名:" prop="username">
+                <el-input v-model="userInfo.username" style="width: 300px">
+                </el-input
+              ></el-form-item>
+              <el-form-item label="密码:" prop="password2">
+                <el-input
+                  v-model="userInfo.password2"
+                  style="width: 300px"
+                  type="password"
+                />
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="saveUser">更新</el-button>
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
+          <el-tab-pane label="个人详情">
+            <!-- 放置个人详情 -->
+            <!-- 动态组件，可以切换组件 -->
+            <component :is="userComponent" />
+            <!-- <UserInfo></UserInfo> -->
+          </el-tab-pane>
+          <el-tab-pane label="岗位信息">
+            <!-- 放置岗位详情 -->
+            <!-- 动态组件，可以切换组件 -->
+            <component :is="JobInfo" />
+          </el-tab-pane>
+        </el-tabs>
+      </el-card>
+    </div>
+  </div>
+</template>
+
+<script>
+import jobInfo from '@/views/employees/components/job-info.vue'
+import UserInfo from '@/views/employees/components/user-info.vue'
+import { saveUserDetailById } from '@/api/employees'
+import { getUserDetailById } from '@/api/user'
+export default {
+  filters: {},
+  components: { UserInfo, jobInfo },
+  data () {
+    return {
+      userComponent: 'UserInfo',
+      JobInfo: 'jobInfo',
+      userId: this.$route.params.id, // 这样可以直接通过this.userId来访问
+      userInfo: {
+        // 专门存放基本信息
+        username: '',
+        password2: ''
+      },
+      rules: {
+        username: [{ required: true, message: '姓名不能为空', trigger: 'blur' }],
+        password2: [{ required: true, message: '密码不能为空', trigger: 'blur' }, { min: 6, max: '9', massage: '密码长度6-9位', trigger: 'blur' }]
+      }
+    }
+  },
+  computed: {},
+  watch: {},
+  created () {
+    this.getUserDetailById()
+  },
+  methods: {
+    async getUserDetailById () {
+      this.userInfo = await getUserDetailById(this.userId)
+    },
+    async saveUser () {
+      try {
+        // 校验
+        await this.$refs.userForm.validate().then(async () => {
+          await saveUserDetailById({ ...this.userInfo, password: this.userInfo.password2 })// 将新密码的值替换原密码的值
+          this.$message.success('保存成功')
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+}
+</script>
+
+<style scoped lang='scss'>
+</style>

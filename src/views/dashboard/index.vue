@@ -9,6 +9,8 @@
         <el-button type="primary">导入excel</el-button>
       </template>
     </PageTools>
+    <upload-excel />
+    <ImageUpload></ImageUpload>
   </div>
 </template>
 

@@ -39,8 +39,9 @@ module.exports = {
     // 配置反向代理
     proxy: {
       '/api': {
+        // target: 'http://ihrm.itheima.net'
         // 当我们的本地的请求 有/api的时候，就会代理我们的请求地址向另外一个服务器发出请求
-        target: 'http://ihrm.itheima.net', // 跨域请求的地址
+        target: 'http://ihrm-java.itheima.net', // 跨域请求的地址
         changeOrigin: true // 是否跨域 需要设置此值为true 才可以让本地服务代理我们发出请求
         // pathRewrite: {
         //   // 重新路由  localhost:8888/api/login  => www.baidu.com/api/login
