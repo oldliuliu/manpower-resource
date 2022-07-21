@@ -4,7 +4,7 @@ import Layout from '@/layout'
 export default {
   // 员工管理
   path: '/permission', // 路由地址 /employees
-  name: 'permission', // 给路由模块的一级路由加一个name属性， 这个属性 我们后面会在做权限的时候用到
+  name: 'permissions', // 给路由模块的一级路由加一个name属性， 这个属性 我们后面会在做权限的时候用到
   component: Layout,
   children: [
     {

@@ -6,7 +6,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 import '@/styles/index.scss' // global css
-
+import checkPermission from '@/mixin/checkPermission'
 import App from './App'
 import store from './store'
 import router from './router'
@@ -41,7 +41,7 @@ Object.keys(directives).forEach(key => {
   // 注册自定义指令
   Vue.directive(key, directives[key])
 })
-
+Vue.mixin(checkPermission)// 所有的组件都拥有了一个全局检查的方法
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明

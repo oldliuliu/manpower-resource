@@ -9,6 +9,7 @@ import attendancesRouter from './modules/attendances'
 import salarysRouter from './modules/salarys'
 import settingRouter from './modules/setting'
 import socialRouter from './modules/social'
+import userRouter from './modules/user'
 Vue.use(Router)
 
 /* Layout */
@@ -71,7 +72,8 @@ export const constantRoutes = [
       path: '', // 二级路由path什么都不写 表示二级默认路由
       component: () => import('@/views/import')
     }]
-  }
+  },
+  userRouter // 放置一个我们都可以访问的路由
 
   // 404 page must be placed at the end!!!
   // { path: '*', redirect: '/404', hidden: true }
@@ -91,7 +93,7 @@ export const asyncRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }), // 管理滚动行为 如果出现滚动 切换就让 让页面回到顶部
-  routes: [...constantRoutes, ...asyncRoutes] // 临时合并所有的路由
+  routes: [...constantRoutes] // 合并所有的路由
 })
 
 const router = createRouter() // 路由实例化
