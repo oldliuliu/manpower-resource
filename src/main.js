@@ -10,7 +10,7 @@ import checkPermission from '@/mixin/checkPermission'
 import App from './App'
 import store from './store'
 import router from './router'
-
+// import i18n from '@/lang'
 import * as filters from '@/filters' // 引入工具类
 // 注册全局的过滤器
 Object.keys(filters).forEach(key => {
@@ -46,11 +46,16 @@ Vue.mixin(checkPermission)// 所有的组件都拥有了一个全局检查的方
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
+// 设置element为当前的语言
+/* Vue.use(ElementUI, {
+  i18n: (key, value) => i18n.t(key, value)
+}) */
 Vue.config.productionTip = false
 
 new Vue({
   el: '#app',
   router,
   store,
+  // i18n,
   render: h => h(App)
 })
